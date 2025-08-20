@@ -1,0 +1,15 @@
+.venv/
+.env
+
+db.sqlite3
+
+media/
+
+*.pyc
+__pycache__/
+
+.idea/
+.vscode/
+
+core/local_dev_settings.py
+core/secret.py
