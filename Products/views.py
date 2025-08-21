@@ -3,7 +3,7 @@ from rest_framework.views import APIView, Response
 from rest_framework.permissions import AllowAny
 from Products.models import Product
 from Products.paginators import CustomPageNumberPagination
-from .services import get_products_based_on_query_params 
+from .services import add_view_count_for_product, get_products_based_on_query_params 
 from .serializers import ProductSerializer
 
 
@@ -25,6 +25,7 @@ class ProductDetailView(APIView):
     permission_classes = (AllowAny,)
     def get(self,request,product_id):
         product = get_object_or_404(Product,pk = product_id)
+        add_view_count_for_product(product) 
         serializer = ProductSerializer(product)
         return Response(serializer.data,
                         status = 200) 
