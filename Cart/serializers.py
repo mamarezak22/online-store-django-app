@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from Products.models import Product
-from Cart.models import Cart , CartItem
+from Cart.models import Cart 
 
 class CartItemSerializer(serializers.Serializer):
     #Accept a product ID in the request
@@ -16,3 +16,8 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = ['id', 'user', 'items']
+
+#remove-item view has a seperate serializer but add-item does not have it.
+#because in remove-item we dont need quantity and that should be deleted from serializer request data that user gave.
+class RemoveItemFromCartSerializer(serializers.Serializer):
+    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
