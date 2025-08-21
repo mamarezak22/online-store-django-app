@@ -7,6 +7,8 @@ class Product(models.Model):
     category = models.ForeignKey("Category",on_delete = models.PROTECT,related_name = "products")
     images = models.ManyToManyField("ProductImage")
     is_available = models.BooleanField(default = False)
+    view_count = models.IntegerField(default = 0)
+    purchase_count = models.IntegerField(default= 0)
     created_at = models.DateTimeField(auto_now_add =  True)
     modified_at = models.DateTimeField(auto_now = True)
 
