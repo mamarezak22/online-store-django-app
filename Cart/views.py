@@ -5,10 +5,10 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from Cart.serializers import CartSerializer, CartItemSerializer, RemoveItemFromCartSerializer
+from Cart.serializers import ApplyDiscountThroughCartItemSerializer, CartSerializer, CartItemSerializer, RemoveItemFromCartSerializer
 
 from .models import Cart,CartItem
-from .services import RemoveItemFromCartService, UpdateItemFromCartService, get_or_create_cart_for_user,  
+from .services import RemoveItemFromCartService, UpdateItemFromCartService, get_or_create_cart_for_user,  ApplyDiscountThroughCartItemService
 
 #cart/
 class CartDetailView(APIView):
@@ -27,7 +27,8 @@ class AddItemToCartView(APIView):
         #we give the data that serializer has to function to get that and do the computation (data -> product & quantity)
         CartItem.objects.create(cart = cart,
                                 product = serializer.validated_data["product"],
-                                quantity = serializer.validated_data["quantity"])
+                                quantity = serializer.validated_data["quantity"],
+                                final_price = product.final_price * quantity)
         return Response({"detail" : "item added to cart"},
                         status = 200)
 
@@ -39,7 +40,7 @@ class RemoveItemFromCartView(APIView):
         serializer.is_valid(raise_exception=True)
         service = RemoveItemFromCartService(cart,serializer.validated_data["product"])
         if not service.check_if_item_is_in_cart():
-            return Response({"detail" : "product is not in cart to be removed"},
+            return Response({"detail" : "item is not in cart to be removed"},
                             status = 400)
         service.remove_item_from_cart()
         return Response({"detail" : "item deleted sucsessfully"},
@@ -55,7 +56,7 @@ class UpdateItemFromCartView(APIView):
                                             serializer.validated_data["product"],
                                             serializer.validated_data["quantity"])
         if not service.check_if_item_is_in_cart():
-            return Response({"detail" : "product is not in cart to be updated"},
+            return Response({"detail" : "item is not in cart to be updated"},
                             status = 400)
         service.update_item_from_cart()
         return Response({"detail" : "item updated sucsessfully"},
@@ -63,8 +64,24 @@ class UpdateItemFromCartView(APIView):
 
         
         
+#cart/apply-discount
+class ApplyDiscountThroughCartItemView(APIView):
+    def post(self,request):
+        cart = get_or_create_cart_for_user(request.user)
+        serializer = ApplyDiscountThroughCartItemSerializer(data = request.data)
+        serializer.is_valid(raise_exception=True)
+        service = ApplyDiscountThroughCartItemService(cart,
+                                                    serializer.validated_data["product"],
+                                                    serializer.validated_data["code"])
+        if not service.check_if_item_is_in_cart():
+            return Response({"detail" : "item is not in cart to be updated"},
+                            status = 400)
 
+        service.apply_discount_through_cart()
+        return Response({"detail" : "discount code applied sucsessfully"},
+                        status = 200)
         
+            
         
 
     

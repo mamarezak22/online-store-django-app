@@ -50,10 +50,32 @@ class UpdateItemFromCartService:
         return False
 
     def update_item_from_cart(self):
-        for item in self.cart.items:
-            if item.product == self.product:
+       for item in self.cart.items:
+            if item.product == self.product: 
                 item.quantity = self.new_quantity
                 item.save()
 
         
+class ApplyDiscountThroughCartItemService:
+    def __init__(self,
+                cart : Cart,
+                product : Product,
+                code : str) -> None:
+        self.cart = cart
+        self.product = product
+        self.code = code
     
+     
+    def check_if_item_is_in_cart(self):
+        for item in self.cart.items:
+            if item.product == self.product:
+                return True
+        return False
+
+    def apply_discount_through_cart(self):
+         for item in self.cart.items:
+            if item.product == self.product:
+                item.final_price -= self.code.discount_rate * item.final_price
+                item.save()
+
+
