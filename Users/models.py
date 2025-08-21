@@ -16,7 +16,7 @@ class UserManager(BaseUserManager):
         return self.create_user(phone_number,password,**extra_fields)
 
 class User(AbstractBaseUser):
-    phone_number = models.CharField(max_length=11)
+    phone_number = models.CharField(max_length=11,primary_key= True)
     username = models.CharField(max_length=64,null = True)
     is_active  = models.BooleanField(default= True)
     is_staff = models.BooleanField(default= False)
