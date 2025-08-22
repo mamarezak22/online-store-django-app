@@ -21,7 +21,3 @@ class CartSerializer(serializers.ModelSerializer):
 #because in remove-item we dont need quantity and that should be deleted from serializer request data that user gave.
 class RemoveItemFromCartSerializer(serializers.Serializer):
     product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
-
-class ApplyDiscountThroughCartItemSerializer(serializers.Serializer):
-    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
-    code = serializers.CharField(max_length = 100)

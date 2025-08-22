@@ -17,13 +17,15 @@ class Cart(models.Model):
 
     @property
     def total_price(self):
-        return sum(item.final_price for item in self.items) 
+        return sum((item.product.price * item.quantity) for item in self.items) 
+    
+    def isempty(self):
+        return len(self.items) == 0
 
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart , on_delete= models.CASCADE , related_name="items")
     product = models.ForeignKey("Products.Product",on_delete=models.CASCADE ,null=True)
     quantity = models.PositiveIntegerField(default=1)
-    final_price = models.IntegerField()
     added_at = models.DateTimeField(auto_now_add=True)
 
