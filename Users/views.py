@@ -92,7 +92,7 @@ class UserDetailView(APIView):
 
 
 
-class PasswordForgotGetCodeView(APIView):
+class PasswordForgotView(APIView):
    def post(self,request):
         serializer = GetCodeSerializer(data = request.data)
 
@@ -107,7 +107,7 @@ class PasswordForgotGetCodeView(APIView):
         
 
 
-class PasswordForgotCheckCodeView(APIView):
+class ChangePasswordView(APIView):
     def post(self,request):
         serializer = ChangePasswordSerializer(data = request.data)
         user = request.user

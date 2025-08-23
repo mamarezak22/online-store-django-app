@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser
 
-from Cart.serializers import AddItemToCartSerializer
-from .models import Cart, CartItem
+from .models import Cart 
 from Products.models import Product
 
 

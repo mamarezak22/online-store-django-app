@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from Cart.serializers importCartSerializer, CartItemSerializer, RemoveItemFromCartSerializer
+from Cart.serializers import CartSerializer, CartItemSerializer, RemoveItemFromCartSerializer
 
 from .models import CartItem
 from .services import RemoveItemFromCartService, UpdateItemFromCartService, get_or_create_cart_for_user  

@@ -1,8 +1,8 @@
 from rest_framework.views import APIView, Response
 
 from Cart.services import get_or_create_cart_for_user
-from orders.serializers import ApplyDiscountToOrderSerializer, OrderSerializer
-from orders.services import ApplyDiscountToOrderService, create_order_from_cart, get_last_not_paid_order_of_user
+from Orders.serializers import ApplyDiscountToOrderSerializer, OrderSerializer
+from Orders.services import ApplyDiscountToOrderService, create_order_from_cart, get_last_not_paid_order_of_user
 
 #based on last cart that user creates and have now it create a order from it.
 

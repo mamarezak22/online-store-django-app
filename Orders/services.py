@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser
 from Cart.models import Cart, User
 from Products.models import DiscountCode
-from orders.models import Order, OrderItem
+from Orders.models import Order, OrderItem
 
 def create_order_from_cart(cart : Cart):
     new_order = Order(user = cart.user,

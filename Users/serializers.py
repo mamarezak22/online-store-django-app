@@ -40,5 +40,5 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ChangePasswordSerializer(serializers.ModelSerializer):
     phone_number = serializers.CharField(max_length = 12)
-    code = serializers.IntegerField(max_length = 6)
+    code = serializers.IntegerField()
     new_password = serializers.CharField()
