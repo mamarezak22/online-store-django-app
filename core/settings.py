@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from .local_dev_settings import *
+from .secret import SECRET_KEY
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,6 +32,7 @@ INSTALLED_APPS = [
     'Products',
     "Users",
     "Cart",
+    "Orders",
 ]
 
 MIDDLEWARE = [
@@ -124,3 +127,5 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MDOELS = "Users.User"
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
