@@ -4,10 +4,9 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import CheckCodeSerializer, CustomTokenObtainPairSerializer, ChangePasswordSerializer, GetCodeSerializer, UserSerializer
+from .serializers import CheckCodeSerializer, CustomTokenObtainPairSerializer, ChangePasswordSerializer, GetCodeSerializer 
 from .models import User
 from .serializers import RegisterSerializer
-from .validators import validate_phone_number 
 from .tasks import send_code
 
 
@@ -23,7 +22,7 @@ class GetCodeView(APIView):
         serializer = GetCodeSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         phone = serializer.validated_data["phone_number"]
-        validate_phone_number(phone)
+
 
         if User.objects.filter(phone_number=phone).exists():
             return Response({"detail": "user already registered"}, status=400)
@@ -50,7 +49,7 @@ class CheckCodeView(APIView):
             return Response({"detail" : "code expired"},
             status = 400)
 
-        elif sended_code != code:
+        elif int(sended_code) != code:
             return Response({"detail" : "code not valid"},
                             status = 400)
         cache.set(f"{phone_number} verified", True)
@@ -78,11 +77,11 @@ class RegisterUserView(APIView):
 
 class UserDetailView(APIView):
     def get(self,request):
-        serializer = UserSerializer(request.user)
+        serializer = RegisterSerializer(request.user)
         return Response(serializer.data , 
                         status = 200)
     def patch(self,request):
-        serializer = UserSerializer(request.user,
+        serializer = RegisterSerializer(request.user,
                                     data = request.data,
                                     partial = True)
         serializer.is_valid(raise_exception=True)
