@@ -1,10 +1,18 @@
-from .models import Product
 from django.db import models
+from django.shortcuts import get_object_or_404
 
 class ProductQuerySet(models.QuerySet):
-    def filter_by_category(self, category_id):
-        if category_id:
-            return self.filter(category__id=category_id)
+    def search(self, text):
+        if text:
+            return self.filter(title__icontains = text)
+        return self
+
+    def filter_by_category(self, category):
+        #cicular problems make that import happen here . dont suprise pls
+        from Products.models import Category
+        if category:
+            category_obj = get_object_or_404(Category,name = category)
+            return self.filter(category__id=category_obj.id)
         return self
 
     def filter_by_availability(self, is_available):
@@ -12,19 +20,16 @@ class ProductQuerySet(models.QuerySet):
             return self.filter(is_available=True)
         return self
 
-    def sort_by_price(self, direction):
-        if direction.lower() == 'a':
-            return self.order_by('price')
-        elif direction.lower() == 'd':
-            return self.order_by('-price')
-        return self
-
-    def most_viewed(self, active):
-        if active:
-            return self.order_by('-views')
-        return self
-
-    def most_purchased(self, active):
-        if active:
-            return self.order_by('-purchase_count')
-        return self
+    def sort_by_value(self, value):
+        if value == "price_desc":
+            return self.order_by("-final_price")
+        elif value == "price_asc":
+            return self.order_by("final_price")
+        elif value == "view":
+            return self.order_by("-view_count")
+        elif value == "purchase":
+            return self.order_by("-purchase_count")
+        elif value == "star":
+            return self.order_by("-star")
+        else:
+            return self
