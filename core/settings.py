@@ -126,6 +126,17 @@ REST_FRAMEWORK = {
     ]
 }
 
-AUTH_USER_MDOELS = "Users.User"
+AUTH_USER_MDOEL = "Users.User"
 CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://localhost:6379",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}

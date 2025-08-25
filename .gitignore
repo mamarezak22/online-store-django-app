@@ -13,3 +13,5 @@ __pycache__/
 
 core/local_dev_settings.py
 core/secret.py
+
+dump.rdb

@@ -2,9 +2,9 @@
 import os
 from celery import Celery
 #proj is the name of your project
-os.environ.setdefault("DJANGO_SETTINGS_MODULE","proj.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE","core.settings")
 #first arg is the app name
-app = Celery("proj")
+app = Celery("core")
 #all the variables that started with CELERY in settings.py are our celery configuration.
 app.config_from_object("django.conf:settings",
 						namespace = "CELERY")
